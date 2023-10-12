@@ -10,7 +10,7 @@
 <body>
     <div class="container my-5">
    <h2>List of Clients</h2>
-   <a class="btn btn-primary" href="/crud/create.php" role="button"> New Client</a>
+   <a class="btn btn-primary" href="/create.php" role="button"> New Client</a>
    <br>
 
    <table class="table">
@@ -31,8 +31,8 @@
         $username="root";
         $password="";
         $database="crud";
-
-        $connection=new mysqli($servername,$username,$password,$database);
+     $connection=new mysqli($servername,$username,$password,$database);
+   
 
         if($connection->connect_error){
             die("Connection failed" . $connection->connect_error);
@@ -49,15 +49,15 @@
         while($row=$result->fetch_assoc()){
             echo "
             <tr>
-            <td>100</td>
-            <td>Bill Gates</td>
-            <td>bill.gates@gmail.com</td>
-            <td>+1111111</td>
-            <td>New York</td>
-            <td>18/05/2003</td>
+            <td>$row[id]</td>
+            <td>$row[name]</td>
+            <td>$row[email]</td>
+            <td>$row[phone]</td>
+            <td>$row[address]</td>
+            <td>$row[created_at]</td>
             <td>
-                <a class='btn btn-primary btn-sm' href='/crud/edit.php'>Edit</a>
-                <a class='btn btn-danger btn-sm' href='/crud/delete.php'>Delete</a>
+                <a class='btn btn-primary btn-sm' href='/crud/edit.php?id=$row[id]'>Edit</a>
+                <a class='btn btn-danger btn-sm' href='/crud/delete.php?id=$row[id]'>Delete</a>
             </td>
           
         </tr>";
