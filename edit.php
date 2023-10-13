@@ -5,6 +5,9 @@
  $database="crud";
 $connection=new mysqli($servername,$username,$password,$database);
 
+
+
+$id="";
 $name="";
 $email="";
 $phone="";
@@ -12,42 +15,55 @@ $address="";
 $errorMessage="";
 $successMessage=""; 
 
+if($_SERVER["REQUEST_METHOD"]=='GET'){
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    if(!isset($_GET["id"])){
+        header("location:/index.php");
+        exit;
+    }
+
+    $id= $_GET["id"];
+
+    $sql="SELECT * FROM clients WHERE id=$id";
+    $result=$connection->query($sql);
+    $row=$result->fetch_assoc();
+
+    if(!$row){
+        header("location:/index.php");
+        exit;
+    }
+
+    $name = "";  
+    $email = "";
+    $phone = "";
+    $address = "";
+}
+else{
     $name = $_POST["name"];
     $email = $_POST["email"];
     $phone = $_POST["phone"];
     $address = $_POST["address"];
-do{
+
+    do{
         if (empty($name) || empty($email) || empty($phone) || empty($address)) {
             $errorMessage = "All fields are required";
             break;
         }
 
-    $sql = "INSERT INTO clients (name, email,phone,address)
-VALUES ('$name', '$email', '$phone', '$address')";
-$result = $connection->query($sql);
+        $sql= "UPDATE clientes SET name=$name, email=$email, phone=$phone, address= $address WHERE id=$id";
+        $result=$connection->query($sql);
 
-   if(!$result){
-    $errorMessage= "Invalid query:" . $connection->error;
-    break;
-   }
-        $name = "";  
-        $email = "";
-        $phone = "";
-        $address = "";
+        if(!$result){
+            $errorMessage=" Invalid query:" . $connection->error;
+            break;
+        }
 
-        $successMessage = "Client added successfully";
+        $successMessage="Client update correcty ";
 
         header("location:/index.php");
         exit;
-    }
-
-    while(false);
+    }while(true);
 }
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -75,6 +91,7 @@ $result = $connection->query($sql);
         ?>
        
         <form method="post">
+            <input type="hidden" name="id" value="<?php echo $id;?>" >
         <div class="row mb-3">
             <label class="col-sm-3 col-form-label">Name</label>
             <div class="col-sm-6">
