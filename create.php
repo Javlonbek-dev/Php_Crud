@@ -19,10 +19,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $phone = $_POST["phone"];
     $address = $_POST["address"];
 do{
-    if (empty($name) || empty($email) || empty($phone) || empty($address)) {
-        $errorMessage = "All fields are required";
-        break;
-    }
+        if (empty($name) || empty($email) || empty($phone) || empty($address)) {
+            $errorMessage = "All fields are required";
+            break;
+        }
 
     $sql = "INSERT INTO clients (name, email,phone,address)
 VALUES ('$name', '$email', '$phone', '$address')";
@@ -32,7 +32,7 @@ $result = $connection->query($sql);
     $errorMessage= "Invalid query:" . $connection->error;
     break;
    }
-        $name = "";     // Clear the variables after successful processing
+        $name = "";  
         $email = "";
         $phone = "";
         $address = "";
